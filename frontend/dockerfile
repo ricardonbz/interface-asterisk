@@ -1,0 +1,20 @@
+# Usar a imagem oficial do Node.js
+FROM node:19
+
+# Criar diretório de trabalho
+WORKDIR /usr/src/app
+
+# Copiar package.json e package-lock.json
+COPY package*.json ./
+
+# Instalar dependências
+RUN npm install
+
+# Copiar o código fonte
+COPY . .
+
+# Expor a porta
+EXPOSE 5173
+
+# Comando para iniciar a aplicação
+CMD ["npm", "run", "dev"]
