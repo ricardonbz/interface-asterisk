@@ -1,0 +1,6 @@
+FROM mysql:latest
+
+ENV MYSQL_ROOT_PASSWORD=rootpassword
+ENV MYSQL_DATABASE=dbasterisk
+ENV MYSQL_USER=dbasterisk        
+ENV MYSQL_PASSWORD=99276083   

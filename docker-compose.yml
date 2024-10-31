@@ -1,4 +1,4 @@
-version: '3.8'
+version: '3.9'
 
 services:
   backend:
@@ -15,13 +15,36 @@ services:
     networks:
       - app-network
 
-  mongodb:
-    image: mongo:latest
+  mysql:
+    build: ./mysql  # Certifique-se de que o Dockerfile está nesta pasta
     ports:
-      - "27017:27017"
+      - "3306:3306"
     networks:
       - app-network
+    volumes:
+      - mysql_data:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpassword
+      MYSQL_DATABASE: dbasterisk
+      MYSQL_USER: dbasterisk
+      MYSQL_PASSWORD: 99276083
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin:latest
+    ports:
+      - "8080:80"
+    networks:
+      - app-network
+    environment:
+      PMA_HOST: mysql
+      PMA_USER: dbasterisk
+      PMA_PASSWORD: 99276083
+    depends_on:
+      - mysql
 
 networks:
   app-network:
     driver: bridge
+
+volumes:
+  mysql_data:
