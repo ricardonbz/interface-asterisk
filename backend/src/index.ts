@@ -1,26 +1,20 @@
-import express, { Request, Response } from 'express'; //  Request, Response typescript
-import connectToDatabase from './db';
-import cors from 'cors'; // Importando o CORS
+// src/index.ts
 
+import express, { Request, Response } from 'express';
+
+// Criação de um app Express
 const app = express();
-const PORT = 3000;
+const port = 3000;
 
-// Adicionando o middleware para analisar JSON
+// Middleware para entender o corpo das requisições como JSON
 app.use(express.json());
-app.use(cors()); // Habilitando CORS:  ele controla quais domínios podem acessar os recursos de um servidor.
 
-app.get('/api/test-connection', async (req: Request, res: Response) => {
-  try {
-    const message = await connectToDatabase();
-    res.status(200).json({ message });
-  } catch (error) {
-    console.error("Erro ao conectar ao banco de dados:", error); // Log do erro
-    const errorMessage = (error as Error).message;
-    res.status(500).json({ error: errorMessage });
-  }
+// Rota de teste
+app.get('/', (req: Request, res: Response) => {
+  res.send('Olá, mundo! Este é um servidor em TypeScript!');
 });
 
-// Iniciando o servidor
-app.listen(PORT, () => {
-  console.log(`Backend rodando em http://localhost:${PORT}`);
+// Inicia o servidor
+app.listen(port, () => {
+  console.log(`Servidor rodando em http://localhost:${port}`);
 });

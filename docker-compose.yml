@@ -2,11 +2,10 @@ version: '3.9'
 
 services:
   backend:
-    build: ./backend
-    ports:
-      - "3000:3000"
-    networks:
+     image: asterisk-backend1 
+     networks:
       - app-network
+    
 
   frontend:
     build: ./frontend
@@ -16,7 +15,7 @@ services:
       - app-network
 
   mysql:
-    build: ./mysql  # Certifique-se de que o Dockerfile está nesta pasta
+    build: ./mysql
     ports:
       - "3306:3306"
     networks:
@@ -24,23 +23,21 @@ services:
     volumes:
       - mysql_data:/var/lib/mysql
     environment:
-      MYSQL_ROOT_PASSWORD: rootpassword
-      MYSQL_DATABASE: dbasterisk
-      MYSQL_USER: dbasterisk
-      MYSQL_PASSWORD: 99276083
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}  # Lê a senha do root do .env
+      MYSQL_DATABASE: ${MYSQL_DATABASE}            # Lê o nome do banco de dados do .env
 
   phpmyadmin:
     image: phpmyadmin/phpmyadmin:latest
     ports:
-      - "8080:80"
+      - "8080:80"  # Porta mapeada para o navegador
     networks:
       - app-network
     environment:
-      PMA_HOST: mysql
-      PMA_USER: dbasterisk
-      PMA_PASSWORD: 99276083
+      PMA_HOST: ${PMA_HOST}           # Nome do serviço MySQL no Docker Compose
+      PMA_USER: ${PMA_USER}           # Usuário root do MySQL
+      PMA_PASSWORD: ${PMA_PASSWORD}   # Senha do root (lê do .env)
     depends_on:
-      - mysql
+      - mysql  # phpMyAdmin depende do serviço mysql
 
 networks:
   app-network:
